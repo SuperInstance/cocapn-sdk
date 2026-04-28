@@ -1,0 +1,16 @@
+{
+  "name": "cocapn",
+  "version": "1.0.0",
+  "description": "Cocapn SDK — one API key, any AI model, see what it costs",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": ["ai", "llm", "openai", "proxy", "deepseek", "gemini", "claude", "gpt"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lucineer/cocapn-sdk"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
