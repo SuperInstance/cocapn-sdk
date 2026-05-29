@@ -71,6 +71,7 @@ Streams text chunks to `onChunk(delta: string)`.
 ### `usage(period?) → Promise<Usage>`
 
 ## How It Fits
+- [OpenConstruct Documentation](https://github.com/SuperInstance/openconstruct-docs) — ecosystem-wide docs and guides
 
 The unified model gateway for the [SuperInstance fleet](https://github.com/SuperInstance):
 
