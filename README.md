@@ -1,5 +1,9 @@
 # cocapn-sdk — One API Key, Any AI Model
 
+[![npm version](https://img.shields.io/npm/v/cocapn)](https://www.npmjs.com/package/cocapn) [![SuperInstance](https://img.shields.io/badge/SuperInstance-Ecosystem-blue)](https://github.com/SuperInstance)
+
+
+
 **One API key to access OpenAI, Claude, DeepSeek, Gemini, and more. See exactly what it costs.**
 
 ## What This Gives You
