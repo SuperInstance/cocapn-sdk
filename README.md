@@ -1,94 +1,88 @@
-# cocapn — SDK
+# cocapn-sdk — One API Key, Any AI Model
 
-One API key, any AI model, see what it costs.
+**One API key to access OpenAI, Claude, DeepSeek, Gemini, and more. See exactly what it costs.**
 
-## Install
+## What This Gives You
+
+- **One API key** — route to any model (DeepSeek, GPT-4o, Claude, Gemini) through a single endpoint
+- **Cost tracking** — every response includes the exact cost, token counts, and provider used
+- **Streaming support** — `chatStream()` delivers tokens as they arrive
+- **Model catalog** — list available models with pricing per token
+- **Usage dashboard** — query your spend by day, week, or month
+
+## Quick Start
 
 ```bash
 npm install cocapn
 ```
 
-## Quick Start
-
 ```javascript
 const cocapn = require('cocapn');
+cocapn.apiKey = process.env.COCAPN_API_KEY; // or pass { apiKey: '...' }
 
-// Set your API key (or use COCAPN_API_KEY env var)
-cocapn.apiKey = 'cocapn_your_key';
-
-// Send a message
-const response = await cocapn.chat('Explain quantum computing', {
+// Chat with any model
+const response = await cocapn.chat('Explain transformers in one paragraph', {
   model: 'deepseek-chat',
+  system: 'You are a concise teacher.'
 });
 
-console.log(response.text);      // "Quantum computing uses..."
-console.log(response.cost);      // 0.0042
-console.log(response.tokens);    // { in: 15, out: 847 }
+console.log(response.text);      // "Transformers are..."
+console.log(response.cost);      // 0.000042
+console.log(response.tokens);    // { in: 15, out: 47 }
+console.log(response.provider);  // "deepseek"
 ```
 
-## Streaming
+### Streaming
 
 ```javascript
 await cocapn.chatStream('Tell me a story', (chunk) => {
   process.stdout.write(chunk);
-}, { model: 'claude-3-5-sonnet' });
+}, { model: 'gpt-4o' });
 ```
 
-## System Prompts
-
-```javascript
-const response = await cocapn.chat('Summarize this article', {
-  model: 'gpt-4o',
-  system: 'You are a helpful assistant that writes concise summaries.',
-});
-```
-
-## Conversation History
-
-```javascript
-const history = [
-  { role: 'user', content: 'My name is Casey' },
-  { role: 'assistant', content: 'Hello Casey!' },
-];
-
-const response = await cocapn.chat('What is my name?', { history });
-console.log(response.text); // "Your name is Casey."
-```
-
-## Models
+### List Models
 
 ```javascript
 const models = await cocapn.models();
-// [{ id: 'deepseek-chat', provider: 'deepseek', costIn: 0.14, costOut: 0.28 }, ...]
+// [{ id: 'deepseek-chat', provider: 'deepseek', costIn: 0.00000014, costOut: 0.00000028 }, ...]
 ```
 
-## Usage
+### Usage Stats
 
 ```javascript
 const usage = await cocapn.usage('week');
-console.log(usage.totalCost);    // 0.42
-console.log(usage.requests);     // 127
-console.log(usage.byModel);      // { 'deepseek-chat': 0.12, 'gpt-4o': 0.30 }
 ```
 
-## TypeScript
+## API Reference
 
-```typescript
-import cocapn from 'cocapn';
+### `new Cocapn(options?)`
+| Option | Default | Description |
+|--------|---------|-------------|
+| `apiKey` | `COCAPN_API_KEY` env | Your Cocapn API key |
+| `baseURL` | `https://cocapn.ai` | API base URL |
 
-const response: ChatResponse = await cocapn.chat('Hello', {
-  model: 'deepseek-chat',
-  temperature: 0.7,
-});
+### `chat(message, options?) → Promise<Response>`
+Returns `{ text, cost, tokens: { in, out }, model, provider }`.
+
+### `chatStream(message, onChunk, options?) → Promise<void>`
+Streams text chunks to `onChunk(delta: string)`.
+
+### `models() → Promise<Model[]>`
+### `usage(period?) → Promise<Usage>`
+
+## How It Fits
+
+The unified model gateway for the [SuperInstance fleet](https://github.com/SuperInstance):
+
+- **[cocapn-py](https://github.com/SuperInstance/cocapn-py)** — Python SDK (same API, different language)
+- **[api-gateway-1](https://github.com/SuperInstance/api-gateway-1)** — The gateway server backing this SDK
+- **[cocapn](https://github.com/SuperInstance/cocapn)** — Core agent infrastructure
+- **[cocapn-explain](https://github.com/SuperInstance/cocapn-explain)** — Agent explainability
+
+## Installation
+
+```bash
+npm install cocapn
 ```
 
-## Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `COCAPN_API_KEY` | Your Cocapn API key |
-| `COCAPN_BASE_URL` | Custom API URL (default: https://cocapn.ai) |
-
-## API Key
-
-Get your key at cocapn.ai after signing up. Free tier includes 50 requests/day.
+Requires Node.js 18+. MIT license.
